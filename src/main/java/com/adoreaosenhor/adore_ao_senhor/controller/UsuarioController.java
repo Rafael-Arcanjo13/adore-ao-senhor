@@ -1,12 +1,11 @@
 package com.adoreaosenhor.adore_ao_senhor.controller;
 
-import com.adoreaosenhor.adore_ao_senhor.domain.usuario.DadosCadastroUsuario;
-import com.adoreaosenhor.adore_ao_senhor.domain.usuario.DadosDetalhamentoUsuario;
-import com.adoreaosenhor.adore_ao_senhor.domain.usuario.Usuario;
-import com.adoreaosenhor.adore_ao_senhor.domain.usuario.UsuarioRepository;
+import com.adoreaosenhor.adore_ao_senhor.domain.usuario.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -29,5 +28,12 @@ public class UsuarioController {
         return ResponseEntity.created(uri).body(new DadosDetalhamentoUsuario(usuario));
     }
 
+    @GetMapping
+    public ResponseEntity<Page<DadosListagemUsuario>> listar(Pageable paginacao) {
+        var page = repository.findAllByAtivoTrue(paginacao)
+                .map(DadosListagemUsuario::new);
+
+        return ResponseEntity.ok(page);
+    }
 
 }
