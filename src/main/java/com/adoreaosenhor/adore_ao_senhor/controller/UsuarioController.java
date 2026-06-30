@@ -36,4 +36,13 @@ public class UsuarioController {
         return ResponseEntity.ok(page);
     }
 
+    @PutMapping
+    @Transactional
+    public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoUsuario dados) {
+        var usuario = repository.getReferenceById(dados.id());
+        usuario.atualizarInformacoes(dados);
+
+        return ResponseEntity.ok(new DadosDetalhamentoUsuario(usuario));
+    }
+
 }

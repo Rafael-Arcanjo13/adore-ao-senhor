@@ -1,6 +1,7 @@
 package com.adoreaosenhor.adore_ao_senhor.domain.usuario;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -93,5 +94,19 @@ public class Usuario {
 
     public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
+    }
+
+    public void atualizarInformacoes(@Valid  DadosAtualizacaoUsuario dados) {
+        if(dados.nome() != null) {
+            this.nome = dados.nome();
+        }
+
+        if(dados.cargo() != null) {
+            this.cargo = dados.cargo();
+        }
+
+        if(dados.telefone() != null) {
+            this.telefone = dados.telefone();
+        }
     }
 }
