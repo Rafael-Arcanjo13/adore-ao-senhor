@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/cadastrar")
 public class UsuarioController {
 
     @Autowired
@@ -23,7 +23,7 @@ public class UsuarioController {
         var usuario = new Usuario(dados);
         repository.save(usuario);
 
-        var uri = uriBuilder.path("/usuarios/{id}").buildAndExpand(usuario.getId()).toUri();
+        var uri = uriBuilder.path("/cadastrar/{id}").buildAndExpand(usuario.getId()).toUri();
 
         return ResponseEntity.created(uri).body(new DadosDetalhamentoUsuario(usuario));
     }
