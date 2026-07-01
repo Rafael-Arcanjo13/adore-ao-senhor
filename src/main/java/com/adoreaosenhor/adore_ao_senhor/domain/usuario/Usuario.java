@@ -109,4 +109,8 @@ public class Usuario {
             this.telefone = dados.telefone();
         }
     }
+
+    public void excluir() {
+        this.ativo = false;
+    }
 }

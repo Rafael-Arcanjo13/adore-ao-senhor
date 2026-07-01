@@ -45,4 +45,13 @@ public class UsuarioController {
         return ResponseEntity.ok(new DadosDetalhamentoUsuario(usuario));
     }
 
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity excluir(@PathVariable Long id) {
+        var usuario = repository.getReferenceById(id);
+        usuario.excluir();
+
+        return ResponseEntity.noContent().build();
+    }
+
 }
