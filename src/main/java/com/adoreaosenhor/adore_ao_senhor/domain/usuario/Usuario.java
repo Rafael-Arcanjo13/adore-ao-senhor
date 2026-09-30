@@ -61,6 +61,16 @@ public class Usuario implements UserDetails {
         this.ativo = true;
     }
 
+    public Usuario(String email, String senha, UserRole role, String nome, String telefone, Cargo cargo) {
+        this.email = email;
+        this.senha = senha;
+        this.role = role;
+        this.nome = nome;
+        this.telefone = telefone;
+        this.cargo = cargo;
+        this.ativo = true;
+    }
+
     public Long getId() {
         return id;
     }
@@ -123,6 +133,14 @@ public class Usuario implements UserDetails {
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    public Instituicao getInstituicao() {
+        return instituicao;
+    }
+
+    public void setInstituicao(Instituicao instituicao) {
+        this.instituicao = instituicao;
     }
 
     public void atualizarInformacoes(@Valid  DadosAtualizacaoUsuario dados) {
