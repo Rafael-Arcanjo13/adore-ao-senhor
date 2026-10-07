@@ -1,7 +1,7 @@
 package com.adoreaosenhor.adore_ao_senhor.controller;
 
-import com.adoreaosenhor.adore_ao_senhor.domain.instituicao.CriarInstituicaoDTO;
-import com.adoreaosenhor.adore_ao_senhor.domain.instituicao.TenantProvisioningService;
+import com.adoreaosenhor.adore_ao_senhor.dto.instituicao.CreateInstituitionDTO;
+import com.adoreaosenhor.adore_ao_senhor.services.InstitutionProvisioningService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class TenantController {
 
     @Autowired
-    private TenantProvisioningService tenantProvisioningService;
+    private InstitutionProvisioningService institutionProvisioningService;
 
     @PostMapping
-    public ResponseEntity cadastrar(@RequestBody @Valid CriarInstituicaoDTO dados) {
-        tenantProvisioningService.provisionarNovoTenant(dados);
+    public ResponseEntity cadastrar(@RequestBody @Valid CreateInstituitionDTO dados) {
+        institutionProvisioningService.provisionarNovoTenant(dados);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

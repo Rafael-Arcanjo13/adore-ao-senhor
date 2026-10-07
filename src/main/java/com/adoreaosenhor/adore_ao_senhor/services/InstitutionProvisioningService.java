@@ -1,31 +1,33 @@
-package com.adoreaosenhor.adore_ao_senhor.domain.instituicao;
+package com.adoreaosenhor.adore_ao_senhor.services;
 
-import com.adoreaosenhor.adore_ao_senhor.domain.usuario.RegisterDTO;
+import com.adoreaosenhor.adore_ao_senhor.domain.instituicao.Instituicao;
+import com.adoreaosenhor.adore_ao_senhor.domain.instituicao.TenantRepository;
+import com.adoreaosenhor.adore_ao_senhor.dto.instituicao.CreateInstituitionDTO;
+import com.adoreaosenhor.adore_ao_senhor.dto.usuario.RegisterUserDTO;
 import com.adoreaosenhor.adore_ao_senhor.domain.usuario.UserRole;
 import com.adoreaosenhor.adore_ao_senhor.domain.usuario.UsuarioRepository;
-import com.adoreaosenhor.adore_ao_senhor.domain.usuario.UsuarioService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TenantProvisioningService {
+public class InstitutionProvisioningService {
 
     @Autowired
     private TenantRepository tenantRepository;
 
     @Autowired
-    private UsuarioService usuarioService;
+    private UserService userService;
 
     @Autowired
     private UsuarioRepository usuarioRepository;
 
     @Transactional
-    public void provisionarNovoTenant(CriarInstituicaoDTO dados) {
+    public void provisionarNovoTenant(CreateInstituitionDTO dados) {
         Instituicao instituicao = new Instituicao(dados.nome());
         tenantRepository.save(instituicao);
 
-        RegisterDTO registerDTO = new RegisterDTO(
+        RegisterUserDTO registerUserDTO = new RegisterUserDTO(
                 dados.emailAdmin(),
                 dados.senhaAdmin(),
                 UserRole.ADMIN,
@@ -34,9 +36,8 @@ public class TenantProvisioningService {
                 dados.cargo()
 
         );
-        usuarioService.cadastrar(registerDTO, instituicao);
+        userService.cadastrar(registerUserDTO, instituicao);
 
     }
 
-    //CORRIGIR ORDEM DE CRIAÇÃO.
 }

@@ -1,6 +1,10 @@
-package com.adoreaosenhor.adore_ao_senhor.domain.usuario;
+package com.adoreaosenhor.adore_ao_senhor.services;
 
 import com.adoreaosenhor.adore_ao_senhor.domain.instituicao.Instituicao;
+import com.adoreaosenhor.adore_ao_senhor.dto.usuario.AuthenticationDTO;
+import com.adoreaosenhor.adore_ao_senhor.domain.usuario.Usuario;
+import com.adoreaosenhor.adore_ao_senhor.domain.usuario.UsuarioRepository;
+import com.adoreaosenhor.adore_ao_senhor.dto.usuario.RegisterUserDTO;
 import com.adoreaosenhor.adore_ao_senhor.infra.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -9,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UsuarioService {
+public class UserService {
 
     @Autowired
     private UsuarioRepository repository;
@@ -23,7 +27,7 @@ public class UsuarioService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public Usuario cadastrar(RegisterDTO dados, Instituicao instituicao) {
+    public Usuario cadastrar(RegisterUserDTO dados, Instituicao instituicao) {
 
         if(this.repository.findByEmail(dados.email()) != null) {
             throw new IllegalArgumentException("E-mail já cadastrado!");

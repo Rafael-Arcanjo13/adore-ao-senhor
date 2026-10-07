@@ -1,7 +1,11 @@
 package com.adoreaosenhor.adore_ao_senhor.controller;
 
 import com.adoreaosenhor.adore_ao_senhor.domain.usuario.*;
+import com.adoreaosenhor.adore_ao_senhor.dto.usuario.AuthenticationDTO;
+import com.adoreaosenhor.adore_ao_senhor.dto.usuario.LoginResponseDTO;
+import com.adoreaosenhor.adore_ao_senhor.dto.usuario.RegisterUserDTO;
 import com.adoreaosenhor.adore_ao_senhor.infra.security.TokenService;
+import com.adoreaosenhor.adore_ao_senhor.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,24 +23,24 @@ public class AuthenticationController {
     private UsuarioRepository repository;
 
     @Autowired
-    private UsuarioService usuarioService;
+    private UserService userService;
 
     @Autowired
     private TokenService tokenService;
 
     @PostMapping("/entrar")
     public ResponseEntity entrar(@RequestBody @Valid AuthenticationDTO dados) {
-        var usuario = usuarioService.entrar(dados);
+        var usuario = userService.entrar(dados);
         var token = tokenService.generateToken(usuario);
 
         return ResponseEntity.ok(new LoginResponseDTO(token, usuario.getNome()));
     }
 
     @PostMapping("/cadastrar")
-    public ResponseEntity cadastrar(@RequestBody @Valid RegisterDTO dados, Authentication authentication) {
+    public ResponseEntity cadastrar(@RequestBody @Valid RegisterUserDTO dados, Authentication authentication) {
 
         var usuarioAutenticado = (Usuario) authentication.getPrincipal();
-        usuarioService.cadastrar(dados, usuarioAutenticado.getInstituicao());
+        userService.cadastrar(dados, usuarioAutenticado.getInstituicao());
 
         return ResponseEntity.ok().build();
     }

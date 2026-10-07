@@ -1,6 +1,7 @@
 package com.adoreaosenhor.adore_ao_senhor.domain.usuario;
 
 import com.adoreaosenhor.adore_ao_senhor.domain.instituicao.Instituicao;
+import com.adoreaosenhor.adore_ao_senhor.dto.usuario.UpdateUserDTO;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import lombok.*;
@@ -51,15 +52,6 @@ public class Usuario implements UserDetails {
     private Instituicao instituicao;
 
     private Boolean ativo;
-
-    public Usuario(DadosCadastroUsuario dados) {
-        this.nome = dados.nome();
-        this.email = dados.email();
-        this.senha = dados.senha();
-        this.telefone = dados.telefone();
-        this.cargo = dados.cargo();
-        this.ativo = true;
-    }
 
     public Usuario(String email, String senha, UserRole role, String nome, String telefone, Cargo cargo) {
         this.email = email;
@@ -143,7 +135,7 @@ public class Usuario implements UserDetails {
         this.instituicao = instituicao;
     }
 
-    public void atualizarInformacoes(@Valid  DadosAtualizacaoUsuario dados) {
+    public void atualizarInformacoes(@Valid UpdateUserDTO dados) {
         if(dados.nome() != null) {
             this.nome = dados.nome();
         }
