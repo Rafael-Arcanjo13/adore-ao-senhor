@@ -1,6 +1,6 @@
 package com.adoreaosenhor.adore_ao_senhor.dto.usuario;
 
-import com.adoreaosenhor.adore_ao_senhor.domain.usuario.Cargo;
+import com.adoreaosenhor.adore_ao_senhor.domain.usuario.Position;
 import com.adoreaosenhor.adore_ao_senhor.domain.usuario.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -12,17 +12,17 @@ public record RegisterUserDTO(
         String email,
 
         @NotNull
-        String senha,
+        String password,
 
         @NotNull
         UserRole role,
 
         @NotBlank
-        String nome,
+        String name,
 
         @NotBlank
-        String telefone,
+        String telephone,
 
         @NotNull
-        Cargo cargo) {
+        Position position) {
 }

@@ -1,6 +1,6 @@
 package com.adoreaosenhor.adore_ao_senhor.domain.usuario;
 
-import com.adoreaosenhor.adore_ao_senhor.domain.instituicao.Instituicao;
+import com.adoreaosenhor.adore_ao_senhor.domain.instituicao.Institution;
 import com.adoreaosenhor.adore_ao_senhor.dto.usuario.UpdateUserDTO;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -16,25 +16,25 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
-@Table(name = "usuarios")
-@Entity(name = "usuario")
+@Table(name = "users")
+@Entity(name = "user")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Usuario implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nome;
+    private String name;
     private String email;
-    private String senha;
-    private String telefone;
+    private String password;
+    private String telephone;
 
     @Enumerated(EnumType.STRING)
-    private Cargo cargo;
+    private Position position;
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
@@ -48,19 +48,19 @@ public class Usuario implements UserDetails {
     private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "instituicao_id")
-    private Instituicao instituicao;
+    @JoinColumn(name = "institutions_id")
+    private Institution institution;
 
-    private Boolean ativo;
+    private Boolean active;
 
-    public Usuario(String email, String senha, UserRole role, String nome, String telefone, Cargo cargo) {
+    public User(String email, String password, UserRole role, String name, String telephone, Position position) {
         this.email = email;
-        this.senha = senha;
+        this.password = password;
         this.role = role;
-        this.nome = nome;
-        this.telefone = telefone;
-        this.cargo = cargo;
-        this.ativo = true;
+        this.name = name;
+        this.telephone = telephone;
+        this.position = position;
+        this.active = true;
     }
 
     public Long getId() {
@@ -71,12 +71,12 @@ public class Usuario implements UserDetails {
         this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -87,36 +87,28 @@ public class Usuario implements UserDetails {
         this.email = email;
     }
 
-    public String getTelefone() {
-        return telefone;
+    public String getTelephone() {
+        return telephone;
     }
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
     }
 
-    public Cargo getCargo() {
-        return cargo;
+    public Position getPosition() {
+        return position;
     }
 
-    public void setCargo(Cargo cargo) {
-        this.cargo = cargo;
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
-    public Boolean getAtivo() {
-        return ativo;
+    public Boolean getActive() {
+        return active;
     }
 
-    public void setAtivo(Boolean ativo) {
-        this.ativo = ativo;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     public UserRole getRole() {
@@ -127,49 +119,40 @@ public class Usuario implements UserDetails {
         this.role = role;
     }
 
-    public Instituicao getInstituicao() {
-        return instituicao;
+    public Institution getInstituicao() {
+        return institution;
     }
 
-    public void setInstituicao(Instituicao instituicao) {
-        this.instituicao = instituicao;
+    public void setInstituicao(Institution institution) {
+        this.institution = institution;
     }
 
     public void atualizarInformacoes(@Valid UpdateUserDTO dados) {
-        if(dados.nome() != null) {
-            this.nome = dados.nome();
+        if(dados.name() != null) {
+            this.name = dados.name();
         }
 
-        if(dados.cargo() != null) {
-            this.cargo = dados.cargo();
+        if(dados.position() != null) {
+            this.position = dados.position();
         }
 
-        if(dados.telefone() != null) {
-            this.telefone = dados.telefone();
+        if(dados.telephone() != null) {
+            this.telephone = dados.telephone();
         }
     }
 
     public void excluir() {
-        this.ativo = false;
+        this.active = false;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.role == UserRole.ADMIN) return List.of(
-                new SimpleGrantedAuthority("ROLE_ADMIN"),
-                new SimpleGrantedAuthority("ROLE_LIDER"),
-                new SimpleGrantedAuthority("ROLE_USER"));
-
-        if (this.role == UserRole.LIDER) return List.of(
-                new SimpleGrantedAuthority("ROLE_LIDER"),
-                new SimpleGrantedAuthority("ROLE_USER"));
-
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role.name()));
     }
 
     @Override
     public @Nullable String getPassword() {
-        return senha;
+        return password;
     }
 
     @Override

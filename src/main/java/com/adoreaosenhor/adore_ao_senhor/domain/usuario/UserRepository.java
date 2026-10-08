@@ -5,8 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    Page<Usuario> findAllByAtivoTrue(Pageable paginacao);
+    Page<User> findAllByActiveTrue(Pageable paginacao);
     UserDetails findByEmail(String email);
 }

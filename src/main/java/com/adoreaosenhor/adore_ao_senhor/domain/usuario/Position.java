@@ -1,6 +1,6 @@
 package com.adoreaosenhor.adore_ao_senhor.domain.usuario;
 
-public enum Cargo {
+public enum Position {
 
     PASTOR("Pastor"),
     PASTORA("Pastora"),
@@ -12,14 +12,14 @@ public enum Cargo {
     BAIXISTA("Baixista"),
     BATERISTA("Baterista");
 
-    private String cargo;
+    private String position;
 
-    Cargo(String cargo){
-        this.cargo = cargo;
+    Position(String position){
+        this.position = position;
     }
 
-    public String getCargo(){
-        return cargo;
+    public String getPosition(){
+        return position;
     }
 
 }

@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/instituicao")
-public class TenantController {
+public class InstitutionController {
 
     @Autowired
     private InstitutionProvisioningService institutionProvisioningService;
 
     @PostMapping
     public ResponseEntity cadastrar(@RequestBody @Valid CreateInstituitionDTO dados) {
-        institutionProvisioningService.provisionarNovoTenant(dados);
+        institutionProvisioningService.provisionNewInstitution(dados);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

@@ -3,7 +3,7 @@ package com.adoreaosenhor.adore_ao_senhor.domain.usuario;
 public enum UserRole {
     ADMIN("Admin"),
     USER("User"),
-    LIDER("Líder");
+    LEADER("LEADER");
 
     private String role;
 

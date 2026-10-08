@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
 
     @Autowired
-    private UsuarioRepository repository;
+    private UserRepository repository;
 
     @Autowired
     private UserService userService;
@@ -33,13 +33,13 @@ public class AuthenticationController {
         var usuario = userService.entrar(dados);
         var token = tokenService.generateToken(usuario);
 
-        return ResponseEntity.ok(new LoginResponseDTO(token, usuario.getNome()));
+        return ResponseEntity.ok(new LoginResponseDTO(token, usuario.getName()));
     }
 
     @PostMapping("/cadastrar")
     public ResponseEntity cadastrar(@RequestBody @Valid RegisterUserDTO dados, Authentication authentication) {
 
-        var usuarioAutenticado = (Usuario) authentication.getPrincipal();
+        var usuarioAutenticado = (User) authentication.getPrincipal();
         userService.cadastrar(dados, usuarioAutenticado.getInstituicao());
 
         return ResponseEntity.ok().build();

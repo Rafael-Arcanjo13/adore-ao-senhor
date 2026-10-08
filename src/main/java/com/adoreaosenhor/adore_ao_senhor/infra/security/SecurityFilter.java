@@ -1,6 +1,6 @@
 package com.adoreaosenhor.adore_ao_senhor.infra.security;
 
-import com.adoreaosenhor.adore_ao_senhor.domain.usuario.UsuarioRepository;
+import com.adoreaosenhor.adore_ao_senhor.domain.usuario.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,14 +21,14 @@ public class SecurityFilter extends OncePerRequestFilter {
     TokenService tokenService;
 
     @Autowired
-    UsuarioRepository usuarioRepository;
+    UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var token = this.recoverToken(request);
         if(token != null) {
             var login = tokenService.validateToken(token);
-            UserDetails user = usuarioRepository.findByEmail(login);
+            UserDetails user = userRepository.findByEmail(login);
 
             var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
