@@ -4,8 +4,8 @@ create table institutions (
     name varchar(100) not null,
     slug varchar(100) not null,
 
-    created_at datetime not null,
-    updated_at datetime not null,
+    created_at timestamp not null,
+    updated_at timestamp not null,
 
     primary key(id)
 

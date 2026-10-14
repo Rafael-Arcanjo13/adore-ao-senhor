@@ -48,7 +48,7 @@ public class User implements UserDetails {
     private LocalDateTime updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "institutions_id")
+    @JoinColumn(name = "institution_id")
     private Institution institution;
 
     private Boolean active;
