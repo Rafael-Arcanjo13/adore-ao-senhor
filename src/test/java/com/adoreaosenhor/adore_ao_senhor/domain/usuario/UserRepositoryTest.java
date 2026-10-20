@@ -17,6 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @ActiveProfiles("test")
@@ -73,6 +74,19 @@ class UserRepositoryTest {
     }
 
     @Test
+    void findUserByEmail() {
+        String emailAdmin = "admin@gmail.com";
+        CreateInstituitionDTO newInstituition = new CreateInstituitionDTO("Exemplo", emailAdmin, "admin123", "admin", "9999999999", Position.LIDER);
+        this.createInstitution(newInstituition);
+
+        Optional<UserDetails> result = Optional.ofNullable(userRepository.findByEmail(emailAdmin));
+
+        assertThat(result.isPresent());
+        assertThat(result.get().getUsername()).isEqualTo("admin@gmail.com");
+
+    }
+
+    @Test
     void findByEmailShouldReturnUserWithCorrectPassword() {
         CreateInstituitionDTO newInstituition = new CreateInstituitionDTO("Exemplo", "admin@gmail.com", "admin123", "admin", "9999999999", Position.LIDER);
         this.createInstitution(newInstituition);
@@ -80,7 +94,7 @@ class UserRepositoryTest {
         entityManager.flush();
         entityManager.clear();
 
-        Optional<UserDetails> user= Optional.ofNullable(userRepository.findByEmail("admin@gmail.com"));
+        Optional<UserDetails> user = Optional.ofNullable(userRepository.findByEmail("admin@gmail.com"));
 
         assertTrue(user.isPresent());
         assertTrue(
