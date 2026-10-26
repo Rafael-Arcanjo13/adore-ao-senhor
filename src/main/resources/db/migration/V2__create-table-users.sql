@@ -14,6 +14,10 @@ create table users (
 
     institution_id bigint not null,
 
+    verification_code varchar(255),
+
+    enable boolean not null,
+
     active boolean not null,
 
     primary key(id),

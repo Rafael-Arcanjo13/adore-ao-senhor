@@ -9,4 +9,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Page<User> findAllByActiveTrue(Pageable paginacao);
     UserDetails findByEmail(String email);
+
+    User findByVerificationCode(String verificationCode);
 }

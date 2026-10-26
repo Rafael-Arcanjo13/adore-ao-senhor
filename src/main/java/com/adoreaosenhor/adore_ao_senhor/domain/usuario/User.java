@@ -51,15 +51,21 @@ public class User implements UserDetails {
     @JoinColumn(name = "institution_id")
     private Institution institution;
 
+    private String verificationCode;
+
+    private Boolean enable;
+
     private Boolean active;
 
-    public User(String email, String password, UserRole role, String name, String telephone, Position position) {
+    public User(String email, String password, UserRole role, String name, String telephone, Position position, String verificationCode) {
         this.email = email;
         this.password = password;
         this.role = role;
         this.name = name;
         this.telephone = telephone;
         this.position = position;
+        this.verificationCode = verificationCode;
+        this.enable = false;
         this.active = true;
     }
 
@@ -127,6 +133,22 @@ public class User implements UserDetails {
         this.institution = institution;
     }
 
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public Boolean getEnable() {
+        return enable;
+    }
+
+    public void setEnable(Boolean enable) {
+        this.enable = enable;
+    }
+
     public void atualizarInformacoes(@Valid UpdateUserDTO dados) {
         if(dados.name() != null) {
             this.name = dados.name();
@@ -177,6 +199,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return this.enable;
     }
 }

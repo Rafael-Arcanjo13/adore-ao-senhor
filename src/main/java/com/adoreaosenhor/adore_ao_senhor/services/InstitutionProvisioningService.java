@@ -6,9 +6,12 @@ import com.adoreaosenhor.adore_ao_senhor.dto.instituicao.CreateInstituitionDTO;
 import com.adoreaosenhor.adore_ao_senhor.dto.usuario.RegisterUserDTO;
 import com.adoreaosenhor.adore_ao_senhor.domain.usuario.UserRole;
 import com.adoreaosenhor.adore_ao_senhor.domain.usuario.UserRepository;
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.UnsupportedEncodingException;
 
 @Service
 public class InstitutionProvisioningService {
@@ -23,7 +26,7 @@ public class InstitutionProvisioningService {
     private UserRepository userRepository;
 
     @Transactional
-    public void provisionNewInstitution(CreateInstituitionDTO dados) {
+    public void provisionNewInstitution(CreateInstituitionDTO dados) throws MessagingException, UnsupportedEncodingException {
         Institution institution = new Institution(dados.name());
         institutionRepository.save(institution);
 
