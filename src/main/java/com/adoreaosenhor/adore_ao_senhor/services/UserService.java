@@ -5,6 +5,7 @@ import com.adoreaosenhor.adore_ao_senhor.dto.usuario.AuthenticationDTO;
 import com.adoreaosenhor.adore_ao_senhor.domain.usuario.User;
 import com.adoreaosenhor.adore_ao_senhor.domain.usuario.UserRepository;
 import com.adoreaosenhor.adore_ao_senhor.dto.usuario.RegisterUserDTO;
+import com.adoreaosenhor.adore_ao_senhor.infra.exceptions.EmailAlreadyRegisteredException;
 import com.adoreaosenhor.adore_ao_senhor.infra.security.TokenService;
 import com.adoreaosenhor.adore_ao_senhor.util.RandomString;
 import jakarta.mail.MessagingException;
@@ -37,7 +38,7 @@ public class UserService {
     public User cadastrar(RegisterUserDTO dados, Institution institution) throws MessagingException, UnsupportedEncodingException {
 
         if(this.repository.findByEmail(dados.email()) != null) {
-            throw new IllegalArgumentException("E-mail já cadastrado!");
+            throw new EmailAlreadyRegisteredException();
         }
 
         var encryptedPassword = passwordEncoder.encode(dados.password());
