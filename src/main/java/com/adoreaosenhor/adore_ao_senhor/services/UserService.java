@@ -4,18 +4,23 @@ import com.adoreaosenhor.adore_ao_senhor.domain.instituicao.Institution;
 import com.adoreaosenhor.adore_ao_senhor.dto.usuario.AuthenticationDTO;
 import com.adoreaosenhor.adore_ao_senhor.domain.usuario.User;
 import com.adoreaosenhor.adore_ao_senhor.domain.usuario.UserRepository;
+import com.adoreaosenhor.adore_ao_senhor.dto.usuario.ReadUserDTO;
 import com.adoreaosenhor.adore_ao_senhor.dto.usuario.RegisterUserDTO;
 import com.adoreaosenhor.adore_ao_senhor.infra.exceptions.EmailAlreadyRegisteredException;
 import com.adoreaosenhor.adore_ao_senhor.infra.security.TokenService;
 import com.adoreaosenhor.adore_ao_senhor.util.RandomString;
 import jakarta.mail.MessagingException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -86,6 +91,14 @@ public class UserService {
             return true;
         }
 
+    }
+
+
+    public List<ReadUserDTO> findAllByInstitutions (Long institutionId, Pageable pageable) {
+            return repository.findByInstitutionIdAndActiveTrue(institutionId, pageable)
+                    .stream()
+                    .map(ReadUserDTO::new)
+                    .collect(Collectors.toList());
     }
 
 }
