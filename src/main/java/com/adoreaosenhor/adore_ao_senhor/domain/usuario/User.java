@@ -149,20 +149,6 @@ public class User implements UserDetails {
         this.enable = enable;
     }
 
-    public void atualizarInformacoes(@Valid UpdateUserDTO dados) {
-        if(dados.name() != null) {
-            this.name = dados.name();
-        }
-
-        if(dados.position() != null) {
-            this.position = dados.position();
-        }
-
-        if(dados.telephone() != null) {
-            this.telephone = dados.telephone();
-        }
-    }
-
     public void excluir() {
         this.active = false;
     }

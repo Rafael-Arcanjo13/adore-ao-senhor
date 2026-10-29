@@ -6,11 +6,11 @@ import com.adoreaosenhor.adore_ao_senhor.domain.usuario.User;
 import com.adoreaosenhor.adore_ao_senhor.domain.usuario.UserRepository;
 import com.adoreaosenhor.adore_ao_senhor.dto.usuario.ReadUserDTO;
 import com.adoreaosenhor.adore_ao_senhor.dto.usuario.RegisterUserDTO;
+import com.adoreaosenhor.adore_ao_senhor.dto.usuario.UpdateUserDTO;
 import com.adoreaosenhor.adore_ao_senhor.infra.exceptions.EmailAlreadyRegisteredException;
 import com.adoreaosenhor.adore_ao_senhor.infra.security.TokenService;
 import com.adoreaosenhor.adore_ao_senhor.util.RandomString;
 import jakarta.mail.MessagingException;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -99,6 +99,18 @@ public class UserService {
                     .stream()
                     .map(ReadUserDTO::new)
                     .collect(Collectors.toList());
+    }
+
+    public UpdateUserDTO updateData(UpdateUserDTO dados, User user) {
+        var authenticatedUser = repository.getReferenceById(user.getId());
+
+        if(dados.name() != null) authenticatedUser.setName(dados.name());
+        if(dados.position() != null) authenticatedUser.setPosition(dados.position());
+        if(dados.telephone() != null) authenticatedUser.setTelephone(dados.telephone());
+
+        repository.save(authenticatedUser);
+
+        return new UpdateUserDTO(authenticatedUser);
     }
 
 }
