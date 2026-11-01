@@ -5,6 +5,7 @@ import com.adoreaosenhor.adore_ao_senhor.domain.usuario.UserRepository;
 import com.adoreaosenhor.adore_ao_senhor.dto.usuario.ReadUserDTO;
 import com.adoreaosenhor.adore_ao_senhor.dto.usuario.UpdateUserDTO;
 import com.adoreaosenhor.adore_ao_senhor.services.UserService;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -46,11 +47,24 @@ public class UserController {
     }
 
     @PatchMapping
+    @Transactional
     public ResponseEntity<UpdateUserDTO> updateUser(@RequestBody @Valid UpdateUserDTO data, Authentication authentication) {
         User authenticatedUser = (User) authentication.getPrincipal();
         UpdateUserDTO dataUpdated = userService.updateData(data, authenticatedUser);
 
         return ResponseEntity.ok(dataUpdated);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity deleteUser(@PathVariable Long id) {
+        return userService.deleteUser(id);
+    }
+
+    @PatchMapping("/{id}")
+    @Transactional
+    public ResponseEntity<ReadUserDTO> activateUser(@PathVariable Long id) {
+        return userService.activateUser(id);
     }
 
 }

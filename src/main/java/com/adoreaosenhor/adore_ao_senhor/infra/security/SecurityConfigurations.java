@@ -42,6 +42,7 @@ public class SecurityConfigurations {
                     req.requestMatchers(HttpMethod.POST, "/instituicao").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/auth/entrar").permitAll();
                     req.requestMatchers(HttpMethod.GET, "/user/verify").permitAll();
+                    req.requestMatchers(HttpMethod.POST, "/user/{id}").hasRole("ADMIN");
                     req.anyRequest().authenticated();
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

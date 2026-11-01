@@ -8,11 +8,13 @@ import com.adoreaosenhor.adore_ao_senhor.dto.usuario.ReadUserDTO;
 import com.adoreaosenhor.adore_ao_senhor.dto.usuario.RegisterUserDTO;
 import com.adoreaosenhor.adore_ao_senhor.dto.usuario.UpdateUserDTO;
 import com.adoreaosenhor.adore_ao_senhor.infra.exceptions.EmailAlreadyRegisteredException;
+import com.adoreaosenhor.adore_ao_senhor.infra.exceptions.NonExistentEmailException;
 import com.adoreaosenhor.adore_ao_senhor.infra.security.TokenService;
 import com.adoreaosenhor.adore_ao_senhor.util.RandomString;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -111,6 +114,31 @@ public class UserService {
         repository.save(authenticatedUser);
 
         return new UpdateUserDTO(authenticatedUser);
+    }
+
+    public ResponseEntity deleteUser(Long id) {
+        if(!repository.existsById(id)) {
+            throw new NonExistentEmailException();
+        }
+
+        var user = repository.getReferenceById(id);
+        user.setActive(false);
+
+        return ResponseEntity.noContent().build();
+
+    }
+
+    public ResponseEntity<ReadUserDTO> activateUser(Long id) {
+        if(!repository.existsById(id)) {
+            throw new NonExistentEmailException();
+        }
+
+        var user = repository.getReferenceById(id);
+        user.setActive(true);
+        repository.save(user);
+
+        return ResponseEntity.ok(new ReadUserDTO(user));
+
     }
 
 }
