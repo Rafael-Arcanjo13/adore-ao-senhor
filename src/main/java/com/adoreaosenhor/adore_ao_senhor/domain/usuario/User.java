@@ -1,6 +1,8 @@
 package com.adoreaosenhor.adore_ao_senhor.domain.usuario;
 
 import com.adoreaosenhor.adore_ao_senhor.domain.instituicao.Institution;
+import com.adoreaosenhor.adore_ao_senhor.domain.music.Music;
+import com.adoreaosenhor.adore_ao_senhor.domain.userMusic.UserMusic;
 import com.adoreaosenhor.adore_ao_senhor.dto.usuario.UpdateUserDTO;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -14,7 +16,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Table(name = "users")
 @Entity(name = "user")
@@ -56,6 +60,9 @@ public class User implements UserDetails {
     private Boolean enable;
 
     private Boolean active;
+
+    @OneToMany(mappedBy = "user")
+    private Set<UserMusic> musics = new HashSet<>();
 
     public User(String email, String password, UserRole role, String name, String telephone, Position position, String verificationCode) {
         this.email = email;

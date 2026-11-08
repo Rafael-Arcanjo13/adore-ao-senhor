@@ -1,6 +1,7 @@
 package com.adoreaosenhor.adore_ao_senhor.services;
 
 import com.adoreaosenhor.adore_ao_senhor.domain.instituicao.Institution;
+import com.adoreaosenhor.adore_ao_senhor.domain.music.Music;
 import com.adoreaosenhor.adore_ao_senhor.dto.usuario.AuthenticationDTO;
 import com.adoreaosenhor.adore_ao_senhor.domain.usuario.User;
 import com.adoreaosenhor.adore_ao_senhor.domain.usuario.UserRepository;
