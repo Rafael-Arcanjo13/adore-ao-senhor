@@ -1,5 +1,6 @@
 package com.adoreaosenhor.adore_ao_senhor.domain.music;
 
+import com.adoreaosenhor.adore_ao_senhor.domain.setlistMusic.SetlistMusic;
 import com.adoreaosenhor.adore_ao_senhor.domain.userMusic.UserMusic;
 import com.adoreaosenhor.adore_ao_senhor.domain.usuario.User;
 import jakarta.persistence.*;
@@ -48,6 +49,9 @@ public class Music {
 
     @OneToMany(mappedBy = "music")
     private Set<UserMusic> users = new HashSet<>();
+
+    @OneToMany(mappedBy = "music")
+    private Set<SetlistMusic> setlists = new HashSet<>();
 
     public Music(String name, String composer, Tonality tone, String linkYoutube, String linkCifraClub) {
         this.name = name;
