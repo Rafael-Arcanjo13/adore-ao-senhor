@@ -2,6 +2,7 @@ package com.adoreaosenhor.adore_ao_senhor.domain.setlistMusic;
 
 import com.adoreaosenhor.adore_ao_senhor.domain.music.Music;
 import com.adoreaosenhor.adore_ao_senhor.domain.setlist.Setlist;
+import com.adoreaosenhor.adore_ao_senhor.domain.usuario.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,6 +40,10 @@ public class SetlistMusic {
     @JoinColumn(name = "music_id", nullable = false)
     private Music music;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "singer_id")
+    private User singer;
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -55,9 +60,10 @@ public class SetlistMusic {
     @Column(nullable = false)
     private Boolean active;
 
-    public SetlistMusic(Setlist setlist, Music music, LocalDateTime createdAt, LocalDateTime updatedAt, Integer executionOrder, String observation, Boolean active) {
+    public SetlistMusic(Setlist setlist, Music music, User singer, LocalDateTime createdAt, LocalDateTime updatedAt, Integer executionOrder, String observation, Boolean active) {
         this.setlist = setlist;
         this.music = music;
+        this.singer = singer;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.executionOrder = executionOrder;
@@ -87,6 +93,14 @@ public class SetlistMusic {
 
     public void setMusic(Music music) {
         this.music = music;
+    }
+
+    public User getSinger() {
+        return singer;
+    }
+
+    public void setSinger(User singer) {
+        this.singer = singer;
     }
 
     public LocalDateTime getCreatedAt() {

@@ -3,6 +3,7 @@ create table setlists_musics (
 
     setlist_id bigint not null,
     music_id bigint not null,
+    singer_id bigint,
 
     execution_order integer not null,
     observation varchar(255),
@@ -25,5 +26,9 @@ create table setlists_musics (
     constraint fk_setlist_musics_music
             foreign key (music_id)
             references musics (id)
-            on delete cascade
+            on delete cascade,
+
+    constraint fk_setlist_musics_singer
+                foreign key (singer_id)
+                references users (id)
 );
