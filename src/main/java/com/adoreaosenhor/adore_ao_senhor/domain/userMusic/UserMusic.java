@@ -4,6 +4,10 @@ import com.adoreaosenhor.adore_ao_senhor.domain.music.Music;
 import com.adoreaosenhor.adore_ao_senhor.domain.music.Tonality;
 import com.adoreaosenhor.adore_ao_senhor.domain.usuario.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -19,6 +23,10 @@ import java.time.LocalDateTime;
         }
 )
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserMusic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
