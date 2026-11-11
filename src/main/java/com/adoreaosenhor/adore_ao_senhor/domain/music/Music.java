@@ -1,8 +1,9 @@
 package com.adoreaosenhor.adore_ao_senhor.domain.music;
 
+import com.adoreaosenhor.adore_ao_senhor.domain.instituicao.Institution;
 import com.adoreaosenhor.adore_ao_senhor.domain.setlistMusic.SetlistMusic;
 import com.adoreaosenhor.adore_ao_senhor.domain.userMusic.UserMusic;
-import com.adoreaosenhor.adore_ao_senhor.domain.usuario.User;
+import com.adoreaosenhor.adore_ao_senhor.dto.music.CreateMusicDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -53,12 +54,17 @@ public class Music {
     @OneToMany(mappedBy = "music")
     private Set<SetlistMusic> setlists = new HashSet<>();
 
-    public Music(String name, String composer, Tonality tone, String linkYoutube, String linkCifraClub) {
-        this.name = name;
-        this.composer = composer;
-        this.tone = tone;
-        this.linkYoutube = linkYoutube;
-        this.linkCifraClub = linkCifraClub;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "institution_id", nullable = false)
+    private Institution institution;
+
+    public Music(CreateMusicDTO data, Institution institution) {
+        this.name = data.name();
+        this.composer = data.composer();
+        this.tone = data.tone();
+        this.linkYoutube = data.linkYoutube();
+        this.linkCifraClub = data.linkCifraClub();
+        this.institution = institution;
     }
 
     public Long getId() {

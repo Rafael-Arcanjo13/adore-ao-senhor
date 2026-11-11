@@ -43,6 +43,7 @@ public class SecurityConfigurations {
                     req.requestMatchers(HttpMethod.POST, "/auth/entrar").permitAll();
                     req.requestMatchers(HttpMethod.GET, "/user/verify").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/user/{id}").hasRole("ADMIN");
+                    req.requestMatchers(HttpMethod.POST, "/music/create").hasRole("LEADER");
                     req.anyRequest().authenticated();
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

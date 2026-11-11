@@ -8,9 +8,15 @@ create table musics (
     link_youtube varchar(255),
     link_cifra_club varchar(255),
 
+    institution_id bigint not null,
 
     created_at timestamp not null,
     updated_at timestamp not null,
 
-    primary key(id)
+    primary key(id),
+
+    constraint fk_musics_institution
+            foreign key (institution_id)
+            references institutions (id)
+
 );
