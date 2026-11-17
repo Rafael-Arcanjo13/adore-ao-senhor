@@ -53,15 +53,12 @@ public class UserMusic {
     private Tonality tone_of_user;
 
     @Column(nullable = false)
-    private Boolean active;
+    private Boolean active = true;
 
-    public UserMusic(User user, Music music, LocalDateTime createdAt, LocalDateTime updatedAt, Tonality tone_of_user, Boolean active) {
+    public UserMusic(User user, Music music) {
         this.user = user;
         this.music = music;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.tone_of_user = tone_of_user;
-        this.active = active;
+        this.tone_of_user = music.getTone();
     }
 
     public Long getId() {

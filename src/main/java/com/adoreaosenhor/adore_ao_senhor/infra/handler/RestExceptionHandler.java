@@ -1,7 +1,9 @@
 package com.adoreaosenhor.adore_ao_senhor.infra.handler;
 
+import com.adoreaosenhor.adore_ao_senhor.infra.exceptions.DuplicateMusicException;
 import com.adoreaosenhor.adore_ao_senhor.infra.exceptions.EmailAlreadyRegisteredException;
 import com.adoreaosenhor.adore_ao_senhor.infra.exceptions.NonExistentEmailException;
+import com.adoreaosenhor.adore_ao_senhor.infra.exceptions.NonExistentMusicException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,6 +23,18 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     private ResponseEntity<RestErrorMessage> nonExistentEmailException(NonExistentEmailException exception) {
         RestErrorMessage threatResponse = new RestErrorMessage(HttpStatus.NOT_FOUND, exception.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(threatResponse);
+    }
+
+    @ExceptionHandler(NonExistentMusicException.class)
+    private ResponseEntity<RestErrorMessage> NonExistentMusicException(NonExistentMusicException exception) {
+        RestErrorMessage threatResponse = new RestErrorMessage(HttpStatus.NOT_FOUND, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(threatResponse);
+    }
+
+    @ExceptionHandler(DuplicateMusicException.class)
+    private ResponseEntity<RestErrorMessage> DuplicateMusicException(DuplicateMusicException exception) {
+        RestErrorMessage threatResponse = new RestErrorMessage(HttpStatus.CONFLICT, exception.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(threatResponse);
     }
 
 }
