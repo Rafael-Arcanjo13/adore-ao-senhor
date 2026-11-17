@@ -6,12 +6,14 @@ import com.adoreaosenhor.adore_ao_senhor.domain.music.MusicRepository;
 import com.adoreaosenhor.adore_ao_senhor.domain.userMusic.UserMusic;
 import com.adoreaosenhor.adore_ao_senhor.domain.userMusic.UserMusicRepository;
 import com.adoreaosenhor.adore_ao_senhor.domain.usuario.User;
+import com.adoreaosenhor.adore_ao_senhor.domain.usuario.UserRepository;
 import com.adoreaosenhor.adore_ao_senhor.dto.music.CreateMusicDTO;
 import com.adoreaosenhor.adore_ao_senhor.dto.music.ReadMusicDTO;
 import com.adoreaosenhor.adore_ao_senhor.infra.exceptions.DuplicateMusicException;
 import com.adoreaosenhor.adore_ao_senhor.infra.exceptions.NonExistentMusicException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,9 @@ public class MusicService {
 
     @Autowired
     private UserMusicRepository userMusicRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Transactional
     public ReadMusicDTO create(CreateMusicDTO data, User authenticatedUser) {
@@ -78,20 +83,55 @@ public class MusicService {
         userMusicRepository.save(userMusic);
     }
 
-    public List<ReadMusicDTO> read(Institution institution, Pageable pageable) {
+    @Transactional
+    public Page<ReadMusicDTO> read(Institution institution, Pageable pageable) {
 
         return musicRepository.findByInstitutionId(institution.getId(), pageable)
-                .stream()
-                .map(ReadMusicDTO::new)
-                .collect(Collectors.toList());
+                .map(ReadMusicDTO::new);
 
     }
 
-    /*public List<ReadMusicDTO> findMyMusics(User authenticatedUser, Pageable pageable) {
+    @Transactional
+    public Page<ReadMusicDTO> findMyMusics(User authenticatedUser, Pageable pageable) {
         // Criar Get para o proprio usuario consultar suas proprias músicas
 
-    }*/
+        Page<UserMusic> userMusics =
+                userMusicRepository.findByUserIdAndActiveTrue(
+                        authenticatedUser.getId(),
+                        pageable
+                );
 
-    // Criar Get para o Adm/Lider pode consultar as músicas dos integrandes da equipe
+        return userMusics.map(userMusic ->
+                new ReadMusicDTO(userMusic.getMusic())
+        );
+
+    }
+
+    @Transactional
+    public Page<ReadMusicDTO> findMusicsByUser(Long userId, User authenticatedUser, Pageable pageable) {
+        // Criar Get para o Adm/Lider pode consultar as músicas dos integrandes da equipe
+
+        Long institutionId = authenticatedUser.getInstituicao().getId();
+
+        User user = userRepository
+                .findByIdAndInstitutionId(userId, institutionId)
+                .orElseThrow(() -> new RuntimeException(
+                        "Integrante não encontrado na sua instituição."
+                ));
+
+        Page<UserMusic> userMusics =
+                userMusicRepository.findByUserIdAndActiveTrue(
+                        user.getId(),
+                        pageable
+                );
+
+        return userMusics.map(userMusic ->
+                new ReadMusicDTO(userMusic.getMusic())
+        );
+
+        // garantir também que as músicas retornadas pertençam à mesma instituição.
+        // Você pode fazer isso na própria consulta JPQL, relacionando UserMusic, User e Music.
+
+    }
 
 }

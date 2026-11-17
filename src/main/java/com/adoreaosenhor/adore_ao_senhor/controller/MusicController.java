@@ -8,6 +8,7 @@ import com.adoreaosenhor.adore_ao_senhor.dto.music.ReadMusicDTO;
 import com.adoreaosenhor.adore_ao_senhor.services.MusicService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,18 +42,25 @@ public class MusicController {
 
 
     @GetMapping
-    public ResponseEntity<List<ReadMusicDTO>> read(@AuthenticationPrincipal User authenticatedUser, Pageable pageable) {
+    public ResponseEntity<Page<ReadMusicDTO>> read(@AuthenticationPrincipal User authenticatedUser, Pageable pageable) {
         Institution institution = authenticatedUser.getInstituicao();
-        List<ReadMusicDTO> musics = musicService.read(institution, pageable);
+        Page<ReadMusicDTO> musics = musicService.read(institution, pageable);
 
         return ResponseEntity.ok(musics);
     }
 
-    /*@GetMapping("/{userId}")
-    public ResponseEntity<List<ReadMusicDTO>> findMyMusics(@AuthenticationPrincipal User authenticatedUser, Pageable pageable) {
-        List<ReadMusicDTO> musics = musicService.findMyMusics(authenticatedUser, pageable);
+    @GetMapping("/users/me/musics")
+    public ResponseEntity<Page<ReadMusicDTO>> findMyMusics(@AuthenticationPrincipal User authenticatedUser, Pageable pageable) {
+        Page<ReadMusicDTO> musics = musicService.findMyMusics(authenticatedUser, pageable);
 
         return ResponseEntity.ok(musics);
-    }*/
+    }
+
+    @GetMapping("/{userId}/musics")
+    public ResponseEntity<Page<ReadMusicDTO>> findMusicsByUser(@PathVariable Long userId, @AuthenticationPrincipal User authenticatedUser, Pageable pageable) {
+        Page<ReadMusicDTO> musics = musicService.findMusicsByUser(userId, authenticatedUser, pageable);
+
+        return ResponseEntity.ok(musics);
+    }
 
 }
