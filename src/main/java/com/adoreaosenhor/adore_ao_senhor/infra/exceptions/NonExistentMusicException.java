@@ -6,6 +6,6 @@ public class NonExistentMusicException extends RuntimeException {
     }
 
     public NonExistentMusicException() {
-        super("E-mail inexistente!");
+        super("Música inexistente!");
     }
 }

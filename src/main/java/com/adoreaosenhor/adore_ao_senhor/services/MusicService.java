@@ -10,6 +10,7 @@ import com.adoreaosenhor.adore_ao_senhor.domain.usuario.UserRepository;
 import com.adoreaosenhor.adore_ao_senhor.dto.music.CreateMusicDTO;
 import com.adoreaosenhor.adore_ao_senhor.dto.music.ReadMusicDTO;
 import com.adoreaosenhor.adore_ao_senhor.infra.exceptions.DuplicateMusicException;
+import com.adoreaosenhor.adore_ao_senhor.infra.exceptions.InstitutionMemberNotFoundException;
 import com.adoreaosenhor.adore_ao_senhor.infra.exceptions.NonExistentMusicException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,13 +116,14 @@ public class MusicService {
 
         User user = userRepository
                 .findByIdAndInstitutionId(userId, institutionId)
-                .orElseThrow(() -> new RuntimeException(
+                .orElseThrow(() -> new InstitutionMemberNotFoundException(
                         "Integrante não encontrado na sua instituição."
                 ));
 
         Page<UserMusic> userMusics =
-                userMusicRepository.findByUserIdAndActiveTrue(
+                userMusicRepository.findActiveMusicsByUserAndInstitution(
                         user.getId(),
+                        institutionId,
                         pageable
                 );
 

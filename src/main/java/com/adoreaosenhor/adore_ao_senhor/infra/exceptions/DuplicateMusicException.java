@@ -6,6 +6,6 @@ public class DuplicateMusicException extends RuntimeException {
     }
 
     public DuplicateMusicException() {
-        super("E-mail inexistente!");
+        super("Música duplicada!");
     }
 }
